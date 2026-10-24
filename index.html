@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Menus de la semaine</title>
+<meta name="theme-color" content="#2f6b3f">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4f1ea;--card:#fff;--ink:#22301f;--mut:#677262;--line:#dfd9cc;--acc:#2f6b3f;--onacc:#fff;--soft:#e7efe2;--warm:#b5562b;--warmbg:#fbeee6;--ice:#1f5f8b;--icebg:#e6f0f6}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141a13;--card:#1d251b;--ink:#e8eee4;--mut:#9fab99;--line:#2f3a2c;--acc:#86c494;--onacc:#13200f;--soft:#24321f;--warm:#e79a72;--warmbg:#36231a;--ice:#7cbbe6;--icebg:#16283a}}
+:root[data-theme="dark"]{--bg:#141a13;--card:#1d251b;--ink:#e8eee4;--mut:#9fab99;--line:#2f3a2c;--acc:#86c494;--onacc:#13200f;--soft:#24321f;--warm:#e79a72;--warmbg:#36231a;--ice:#7cbbe6;--icebg:#16283a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 "Bricolage Grotesque",system-ui,-apple-system,Segoe UI,sans-serif;padding:env(safe-area-inset-top,0px) 0 calc(96px + env(safe-area-inset-bottom,0px))}
+header{padding:16px 16px 4px}
+h1{font-size:26px;margin:0;font-weight:700}
+.sub{color:var(--mut);font-size:14px;margin:2px 0 10px}
+input,select,button,textarea{font:inherit;color:inherit}
+input,select,textarea{width:100%;padding:11px;border:1px solid var(--line);border-radius:10px;background:var(--card)}
+textarea{min-height:150px;resize:vertical}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding:0 16px}
+.tab{flex:none;padding:9px 14px;border-radius:10px;border:1px solid var(--line);background:var(--card);font-weight:700;font-size:14px;cursor:pointer}
+.tab.on{background:var(--acc);color:var(--onacc);border-color:var(--acc)}
+main{padding:12px 16px}
+.wnav{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.wnav b{flex:1;text-align:center}
+.ib{width:42px;height:42px;flex:none;border-radius:10px;border:1px solid var(--line);background:var(--card);font-size:18px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center}
+.ib.on{background:var(--acc);color:var(--onacc);border-color:var(--acc)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px;margin-bottom:10px}
+.card h3{margin:0 0 8px;font-size:17px}
+.fz{background:var(--icebg);border-color:transparent}
+.fz h3{color:var(--ice)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:20px;padding:5px 11px;font-size:13px;cursor:pointer}
+.chip.on{background:var(--acc);color:var(--onacc);border-color:var(--acc)}
+.fz .chip{border-color:transparent}
+.slot{display:flex;gap:8px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}
+.slot:first-of-type{border-top:none}
+.lbl{width:42px;flex:none;font-size:12px;font-weight:700;color:var(--mut);text-transform:uppercase}
+.dish{flex:1;min-width:0;cursor:pointer}
+.dish .n{font-weight:700;overflow-wrap:anywhere;line-height:1.25}
+.dish .m{font-size:12.5px;color:var(--mut)}
+.tg{display:inline-block;font-size:11.5px;border-radius:6px;padding:0 6px;margin:2px 4px 0 0;background:var(--soft);color:var(--acc)}
+.tg.i{background:var(--icebg);color:var(--ice)}
+.tg.w{background:var(--warmbg);color:var(--warm)}
+.sb{width:36px;height:36px;flex:none;border-radius:9px;border:1px solid var(--line);background:transparent;cursor:pointer;font-size:15px;display:inline-flex;align-items:center;justify-content:center}
+.sb.on{background:var(--acc);color:var(--onacc);border-color:var(--acc)}
+.chk{display:flex;gap:10px;color:var(--ink);font-size:15px;margin:0;align-items:flex-start;padding:7px 0;border-top:1px solid var(--line);cursor:pointer}
+.chk:first-of-type{border-top:none}
+.chk input{width:22px;height:22px;flex:none;margin:1px 0 0;accent-color:var(--acc)}
+.chk.done .t{text-decoration:line-through;color:var(--mut)}
+.chk .t{flex:1;min-width:0}
+.chk small{display:block;color:var(--mut);font-size:12px}
+.chk small.i{color:var(--ice)}
+.rayon{margin:16px 0 6px;font-weight:700;color:var(--mut);font-size:13px;text-transform:uppercase;letter-spacing:.03em}
+.bar{position:fixed;left:0;right:0;bottom:0;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));background:var(--bg);border-top:1px solid var(--line);display:flex;gap:8px}
+.btn{flex:1;padding:13px;border-radius:12px;border:1px solid var(--acc);background:var(--card);color:var(--acc);font-weight:700;cursor:pointer}
+.btn.p{background:var(--acc);color:var(--onacc)}
+.btn:disabled{opacity:.5}
+.empty{text-align:center;color:var(--mut);padding:30px 10px}
+dialog{border:none;border-radius:16px;background:var(--card);color:var(--ink);width:min(94vw,460px);max-height:86vh;padding:16px}
+dialog::backdrop{background:rgba(0,0,0,.5)}
+dialog h2{margin:0 0 8px;font-size:19px}
+label{display:block;font-size:13px;color:var(--mut);margin:10px 0 4px}
+.row{display:flex;gap:8px}.row>*{flex:1}
+.opt{padding:10px;border:1px solid var(--line);border-radius:10px;margin-bottom:6px;cursor:pointer}
+.opt .m{font-size:12.5px;color:var(--mut)}
+.toast{position:fixed;left:16px;right:16px;bottom:96px;background:var(--ink);color:var(--bg);padding:12px;border-radius:10px;text-align:center;z-index:9}
+.note{font-size:13px;color:var(--mut);margin:6px 0}
+ul.ing{margin:6px 0 0;padding-left:18px}
+.inline{display:flex;gap:6px;align-items:center;font-size:14px;color:var(--ink);margin:6px 12px 0 0}
+.inline input{width:auto}
+.busy{opacity:.6;pointer-events:none}
+</style>
+</head>
+<body>
+<header>
+  <h1>Menus de la semaine</h1>
+  <p class="sub" id="sub"></p>
+</header>
+<nav class="tabs" id="tabs"></nav>
+<main id="view"></main>
+<div class="bar" id="bar"></div>
+
+<dialog id="dlg"><div id="dlgBody"></div></dialog>
+
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+import {initializeFirestore,persistentLocalCache,persistentMultipleTabManager,doc,collection,setDoc,onSnapshot} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+window.FB={initializeApp,initializeFirestore,persistentLocalCache,persistentMultipleTabManager,doc,collection,setDoc,onSnapshot};
+window.dispatchEvent(new Event('fbready'));
+</script>
+<script src="engine.js"></script>
+<script>
+(function(){
+var M=window.MENUS, KEY='menus-v1', AKEY='menus-apikey', MKEY='menus-model';
+var S={weeks:{},custom:{},hidden:{},lists:{},settings:{pm:4,pms:3,ps:4,fz:4,zone:'B'},rev:0};
+try{var raw=localStorage.getItem(KEY);if(raw)S=JSON.parse(raw);}catch(e){}
+function normalize(){
+  S.weeks=S.weeks||{};S.custom=S.custom||{};S.hidden=S.hidden||{};S.lists=S.lists||{};
+  S.settings=S.settings||{};if(!S.settings.pm)S.settings.pm=4;if(!S.settings.ps)S.settings.ps=4;if(S.settings.fz==null)S.settings.fz=4;if(S.settings.pms==null)S.settings.pms=3;if(S.settings.zone==null)S.settings.zone='B';
+  if(!S.seeded){M.SEED_WEEKS.forEach(function(w){if(!S.weeks[w.w])S.weeks[w.w]=JSON.parse(JSON.stringify(w));});S.seeded=1;}
+}
+normalize();
+var view='semaine', monday=M.targetMonday(new Date()), plFilter='tous', plSearch='';
+var FZ=[], fzSource='';
+
+function $(i){return document.getElementById(i);}
+function el(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e;}
+function toast(t){var d=el('div','toast',t);document.body.appendChild(d);setTimeout(function(){d.remove();},2800);}
+function recipes(){var o={};for(var k in M.BASE)o[k]=M.BASE[k];for(var c in S.custom)o[c]=S.custom[c];return o;}
+function dateLbl(isoStr,opt){return M.parseIso(isoStr).toLocaleDateString('fr-FR',opt||{day:'numeric',month:'short'});}
+function localSave(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+function save(){S.rev=Date.now();localSave();schedulePush();}
+function engineOpts(){return {recipes:recipes(),monday:monday,weeks:S.weeks,freezer:FZ,hidden:S.hidden};}
+
+/* ===== Synchro Firebase (même projet et même code de foyer que l'appli congélos) ===== */
+var FBC={apiKey:"AIzaSyCdHsWExODN-ugw353PMQ3R6rzB2fDJ-9k",authDomain:"congelos-8a6f6.firebaseapp.com",projectId:"congelos-8a6f6",storageBucket:"congelos-8a6f6.firebasestorage.app",messagingSenderId:"280353650044",appId:"1:280353650044:web:e2970d6046d3219557e0f9"};
+var HKEY='congelos-house', MHKEY='menus-house';
+var house='', fdb=null, unsubs=[], syncMsg='', pushT=null, gotRemote=false;
+function validCode(c){return /^[A-Za-z0-9]{8,64}$/.test(c||'');}
+function getHouse(){try{return localStorage.getItem(MHKEY)||localStorage.getItem(HKEY)||'';}catch(e){return '';}}
+function setHouse(c){try{if(c)localStorage.setItem(MHKEY,c);else localStorage.removeItem(MHKEY);}catch(e){}}
+function localFreezer(){try{var r=localStorage.getItem('congelos-v1');if(r){var s=JSON.parse(r);return s.items||[];}}catch(e){}return [];}
+function onSyncErr(e){syncMsg=(e&&e.code==='permission-denied')?'accès refusé : règles Firebase à mettre à jour (voir Réglages)':'erreur de synchro';render();}
+function payload(){var o=JSON.parse(JSON.stringify(S));return o;}
+function schedulePush(){
+  if(!house||!fdb||!gotRemote)return;
+  clearTimeout(pushT);
+  pushT=setTimeout(function(){FB.setDoc(FB.doc(fdb,'foyers',house,'menus','main'),payload()).catch(onSyncErr);},600);
+}
+function stopSync(){unsubs.forEach(function(u){try{u();}catch(e){}});unsubs=[];gotRemote=false;}
+function startSync(code){
+  if(!window.FB||!validCode(code))return false;
+  stopSync();house=code;syncMsg='';
+  try{
+    if(!fdb){
+      var app=FB.initializeApp(FBC);
+      try{fdb=FB.initializeFirestore(app,{localCache:FB.persistentLocalCache({tabManager:FB.persistentMultipleTabManager()})});}
+      catch(e){fdb=FB.initializeFirestore(app,{});}
+    }
+  }catch(e){toast('Synchronisation impossible');return false;}
+  unsubs.push(FB.onSnapshot(FB.doc(fdb,'foyers',code,'menus','main'),function(d){
+    var r=d.exists()?d.data():null;
+    if(r&&r.rev>(S.rev||0)){S=r;normalize();localSave();}
+    var first=!gotRemote;gotRemote=true;syncMsg='';
+    if(!r||r.rev<(S.rev||0)||first&&!r)schedulePush();
+    render();
+  },onSyncErr));
+  unsubs.push(FB.onSnapshot(FB.collection(fdb,'foyers',code,'items'),function(snap){
+    var a=[];snap.forEach(function(x){var o=x.data();o.id=x.id;a.push(o);});
+    FZ=a;fzSource='partagé';render();
+  },function(e){if(!FZ.length){FZ=localFreezer();fzSource=FZ.length?'local':'';}render();}));
+  return true;
+}
+function initSync(){
+  if(initSync.done||!window.FB)return;initSync.done=true;
+  var c=getHouse();if(validCode(c))startSync(c);
+}
+window.addEventListener('fbready',initSync);
+setTimeout(initSync,50);
+FZ=localFreezer();fzSource=FZ.length?'local':'';
+
+/* ===== Semaine ===== */
+function wk(){return S.weeks[monday];}
+function slotRecipe(s){var R=recipes();return s&&s.id?R[s.id]:null;}
+function slotName(s){if(!s)return '—';if(s.fz)return s.n;if(s.txt)return s.txt;var r=slotRecipe(s);return r?r.n:'(plat supprimé)';}
+function propose(){
+  var w=wk(), o=engineOpts();o.keep=w||{};
+  var nw=M.generate(o);nw.w=monday;nw.gen=Date.now();nw.prep={};
+  S.weeks[monday]=nw;save();render();
+}
+function portionsTxt(){
+  var p=M.midiPortions(monday,S.settings),vac=p.filter(function(x,d){return M.isHoliday(M.addDays(monday,d),S.settings.zone);}).length;
+  var lbl=vac===5?'vacances scolaires':vac===0?'période scolaire':'vacances '+vac+' jour'+(vac>1?'s':'')+' sur 5';
+  var same=p.every(function(x){return x===p[0];});
+  return 'Midis : '+(same?p[0]:p.join('/'))+' portions ('+lbl+') · soirs : '+S.settings.ps+' portions';
+}
+function freezerPrioList(){
+  return FZ.filter(function(i){return i.qty>0&&M.freezerPriority(i)>0;})
+    .sort(function(a,b){return M.freezerPriority(b)-M.freezerPriority(a);});
+}
+function ageTxt(it){
+  if(it.dlc){var d=Math.round((new Date(it.dlc)-Date.now())/86400000);if(d<30)return d<0?'DLC dépassée':'DLC dans '+d+' j';}
+  if(it.date){var m=Math.floor((Date.now()-new Date(it.date))/2592000000);return 'depuis '+m+' mois';}
+  return '';
+}
+function renderSemaine(v){
+  var nav=el('div','wnav'),pv=el('button','ib','‹'),nx=el('button','ib','›');
+  pv.onclick=function(){monday=M.addDays(monday,-7);render();};
+  nx.onclick=function(){monday=M.addDays(monday,7);render();};
+  nav.append(pv,el('b',null,'Semaine du '+dateLbl(monday,{day:'numeric',month:'long'})),nx);v.append(nav);
+  v.append(el('p','note',portionsTxt()));
+
+  var pri=freezerPrioList();
+  if(pri.length){
+    var c=el('div','card fz');c.append(el('h3',null,'À écouler au congélo'));
+    var ch=el('div','chips');
+    pri.slice(0,8).forEach(function(it){ch.append(el('span','chip',it.name+' · '+ageTxt(it)));});
+    c.append(ch);
+    if(pri.length>8)c.append(el('p','note','et '+(pri.length-8)+' autres produits'));
+    v.append(c);
+  }
+
+  var w=wk();
+  if(!w){
+    var e=el('div','empty');
+    e.append(el('p',null,'Pas encore de menu pour cette semaine.'));
+    var b=el('button','btn p','Proposer un menu');b.style.maxWidth='260px';b.onclick=propose;e.append(b);
+    v.append(e);return;
+  }
+  if(w.note){var n=el('div','card');n.append(el('h3',null,'Le mot de l\u2019IA'));n.append(el('p','note',w.note));v.append(n);}
+
+  /* Dimanche : ce qu'il y a à cuisiner */
+  var R=recipes(), sun=el('div','card');
+  sun.append(el('h3',null,'Dimanche '+dateLbl(M.addDays(monday,-1))+' — en cuisine'));
+  var todo=[];
+  w.midi.forEach(function(s,d){
+    var r=slotRecipe(s);if(!r)return;
+    var t=r.n, extra='';
+    if(d===0&&r.t==='mijote'){extra='lundi midi'+(S.settings.fz?' + '+S.settings.fz+' portions à congeler':'');}
+    else{extra=M.DAYS[d].toLowerCase()+' midi';var kn=M.keepNote(r,d);if(kn)extra+=' · '+kn;}
+    todo.push({k:'m'+d,t:t,x:extra});
+  });
+  w.soir.forEach(function(s,d){
+    var r=slotRecipe(s);if(!r||!(r.k>=2))return;
+    var x=M.DAYS[d].toLowerCase()+' soir';if(r.k<d+1)x+=r.f?' · à congeler, sortir la veille':' · à faire le jour même';
+    todo.push({k:'s'+d,t:r.n,x:x});
+  });
+  if(!todo.length)sun.append(el('p','note','Rien à préparer.'));
+  w.prep=w.prep||{};
+  todo.forEach(function(t){
+    var l=el('label','chk'+(w.prep[t.k]?' done':'')),cb=el('input');cb.type='checkbox';cb.checked=!!w.prep[t.k];
+    cb.onchange=function(){w.prep[t.k]=cb.checked;save();render();};
+    var tx=el('span','t',t.t);tx.append(el('small',null,t.x));l.append(cb,tx);sun.append(l);
+  });
+  v.append(sun);
+
+  M.DAYS.forEach(function(day,d){
+    var c=el('div','card');c.append(el('h3',null,day+' '+dateLbl(M.addDays(monday,d))));
+    ['midi','soir'].forEach(function(meal){c.append(slotRow(w,meal,d));});
+    v.append(c);
+  });
+}
+function slotRow(w,meal,d){
+  var s=w[meal][d], row=el('div','slot'), r=slotRecipe(s);
+  row.append(el('span','lbl',meal));
+  var dish=el('div','dish');dish.append(el('div','n',slotName(s)));
+  var m=el('div','m');
+  if(s&&s.fz)m.append(el('span','tg i','du congélo'));
+  if(r){
+    if(meal==='midi'&&d===0&&r.t==='mijote')m.append(el('span','tg w','mijoté du dimanche'));
+    var kn=meal==='midi'?M.keepNote(r,d):'';
+    if(meal==='soir'&&r.k>=2&&r.k<d+1)kn=r.f?'à congeler dimanche, sortir la veille':'';
+    if(kn)m.append(el('span','tg i',kn));
+    if(meal==='soir'&&r.m)m.append(el('span','tg w','viande'));
+  }
+  if(m.childNodes.length)dish.append(m);
+  dish.onclick=function(){openPicker(meal,d);};
+  var rr=el('button','sb','↻');rr.title='Autre proposition';rr.setAttribute('aria-label','Autre proposition');
+  rr.onclick=function(){var ns=M.reroll(engineOpts(),w,meal,d);if(ns){w[meal][d]=ns;save();render();}};
+  var lk=el('button','sb'+(s&&s.l?' on':''),s&&s.l?'🔒':'🔓');lk.title='Garder ce plat quand on relance';lk.setAttribute('aria-label','Garder ce plat');
+  lk.onclick=function(){if(!s)return;s.l=!s.l;save();render();};
+  row.append(dish,rr,lk);
+  return row;
+}
+function openPicker(meal,d){
+  var w=wk(), R=recipes(), b=$('dlgBody');b.innerHTML='';
+  b.append(el('h2',null,M.DAYS[d]+' '+meal));
+  var cur=w[meal][d];
+  if(cur&&cur.id&&R[cur.id]){var vb=el('button','btn','Voir la recette de « '+R[cur.id].n+' »');vb.style.width='100%';vb.style.marginBottom='8px';vb.onclick=function(){closeDlg();openRecipe(cur.id);};b.append(vb);}
+  var q=el('input');q.placeholder='Chercher un plat…';b.append(q);
+  var list=el('div');list.style.marginTop='8px';b.append(list);
+  var w2={midi:w.midi.slice(),soir:w.soir.slice()};w2[meal][d]=null;
+  var ctx=M.makeCtx(engineOpts());
+  var good=M.candidates(ctx,{meal:meal,day:d},w2).map(function(x){return x.id;});
+  var others=Object.keys(R).filter(function(id){return good.indexOf(id)<0&&!S.hidden[id];}).sort(function(a,b){return R[a].n.localeCompare(R[b].n,'fr');});
+  var fzm=FZ.filter(function(it){return it.qty>0&&M.PLAT_CATS[it.cat];});
+  function pick(s){if(cur&&cur.l)s.l=true;w[meal][d]=s;save();closeDlg();render();}
+  function draw(){
+    list.innerHTML='';var f=M.norm(q.value);
+    function opt(t,sub,fn){var o=el('div','opt');o.append(el('div',null,t));if(sub)o.append(el('div','m',sub));o.onclick=fn;list.append(o);}
+    var shown=0;
+    fzm.forEach(function(it){if(f&&M.norm(it.name).indexOf(f)<0)return;opt('❄ '+it.name,'au congélo · '+it.qty+' '+it.unit,function(){pick({fz:it.id,n:it.name});});shown++;});
+    good.forEach(function(id){if(f&&M.norm(R[id].n).indexOf(f)<0)return;if(!f&&shown>=14)return;opt(R[id].n,'suggéré',function(){pick({id:id});});shown++;});
+    if(f)others.forEach(function(id){if(M.norm(R[id].n).indexOf(f)<0)return;opt(R[id].n,'hors saison ou autre type de repas',function(){pick({id:id});});});
+    if(f)opt('« '+q.value.trim()+' »','texte libre (restes, resto, invités…)',function(){pick({txt:q.value.trim()});});
+    opt('Rien / pas à la maison',null,function(){pick({txt:'—'});});
+  }
+  q.oninput=draw;draw();
+  var cl=el('button','btn','Fermer');cl.style.width='100%';cl.style.marginTop='6px';cl.onclick=closeDlg;b.append(cl);
+  $('dlg').showModal();
+}
+function closeDlg(){try{$('dlg').close();}catch(e){}}
+
+/* ===== Courses ===== */
+function listState(){var l=S.lists[monday];if(!l){l={c:{},x:[]};S.lists[monday]=l;}l.c=l.c||{};l.x=l.x||[];return l;}
+function shoppingItems(){var w=wk();if(!w)return [];return M.shopping({week:w,recipes:recipes(),freezer:FZ,settings:S.settings,monday:monday});}
+function renderCourses(v){
+  var nav=el('div','wnav'),pv=el('button','ib','‹'),nx=el('button','ib','›');
+  pv.onclick=function(){monday=M.addDays(monday,-7);render();};nx.onclick=function(){monday=M.addDays(monday,7);render();};
+  nav.append(pv,el('b',null,'Courses — semaine du '+dateLbl(monday)),nx);v.append(nav);
+  v.append(el('p','note',portionsTxt()));
+  if(!wk()){v.append(el('p','empty','Propose d\u2019abord le menu de la semaine.'));return;}
+  var L=listState(), add=el('div','row'),inp=el('input'),ab=el('button','ib','+');
+  inp.placeholder='Ajouter (lait, couches, fruits…)';ab.style.flex='none';
+  function addIt(){var t=inp.value.trim();if(!t)return;L.x.push({id:Date.now().toString(36),t:t});inp.value='';save();render();}
+  ab.onclick=addIt;inp.onkeydown=function(e){if(e.key==='Enter')addIt();};
+  add.append(inp,ab);v.append(add);
+  v.append(el('p','note','Base salée : sel, poivre, huile, épices et condiments ne sont pas listés. ❄ = déjà au congélo, à vérifier avant d\u2019acheter.'));
+  var items=shoppingItems(), cur='';
+  items.forEach(function(a){
+    if(a.r!==cur){cur=a.r;v.append(el('div','rayon',cur));}
+    v.append(chkRow(a.key,a.label,a.fz?'❄ au congélo : '+a.fz:'',a.for.join(' · '),L));
+  });
+  if(L.x.length){
+    v.append(el('div','rayon','Ajouts'));
+    L.x.forEach(function(x){
+      var r=chkRow('x'+x.id,x.t,'','',L),del=el('button','sb','✕');del.setAttribute('aria-label','Supprimer');
+      del.onclick=function(e){e.preventDefault();L.x=L.x.filter(function(y){return y.id!==x.id;});save();render();};
+      r.append(del);v.append(r);
+    });
+  }
+}
+function chkRow(key,label,fz,sub,L){
+  var l=el('label','chk'+(L.c[key]?' done':'')),cb=el('input');cb.type='checkbox';cb.checked=!!L.c[key];
+  cb.onchange=function(){if(cb.checked)L.c[key]=1;else delete L.c[key];save();render();};
+  var t=el('span','t',label);if(fz)t.append(el('small','i',fz));if(sub)t.append(el('small',null,sub));
+  l.append(cb,t);return l;
+}
+function listText(){
+  var L=listState(),items=shoppingItems(),cur='',out=['Courses — semaine du '+dateLbl(monday)];
+  items.forEach(function(a){if(L.c[a.key])return;if(a.r!==cur){cur=a.r;out.push('','• '+cur);}out.push('- '+a.label+(a.fz?' (vérifier congélo)':''));});
+  var xs=L.x.filter(function(x){return !L.c['x'+x.id];});
+  if(xs.length){out.push('','• Ajouts');xs.forEach(function(x){out.push('- '+x.t);});}
+  return out.join('\n');
+}
+function shareList(){
+  var t=listText();
+  if(navigator.share){navigator.share({title:'Liste de courses',text:t}).catch(function(){});}
+  else if(navigator.clipboard){navigator.clipboard.writeText(t).then(function(){toast('Liste copiée');});}
+}
+
+/* ===== Plats ===== */
+var TYPES={mijote:'Mijoté du dimanche',midi:'Midi (gamelle)',soir:'Soir'};
+function seasonsTxt(s){if(!s||s.length>=4)return 'toute l\u2019année';return s.split('').map(function(c){return M.SEASON_NAMES[c];}).join(', ');}
+function renderPlats(v){
+  var R=recipes(), st=M.stats(S.weeks,'9999-12-31');
+  var q=el('input');q.placeholder='Chercher un plat…';q.value=plSearch;
+  q.oninput=function(){plSearch=q.value;var p=q.selectionStart;render();var n=document.querySelector('main input');if(n){n.focus();n.setSelectionRange(p,p);}};
+  v.append(q);
+  var ch=el('div','chips');ch.style.margin='10px 0';
+  [['tous','Tous'],['mijote','Mijotés'],['midi','Midis'],['soir','Soirs'],['exclus','Exclus']].forEach(function(f){
+    var c=el('button','chip'+(plFilter===f[0]?' on':''),f[1]);c.onclick=function(){plFilter=f[0];render();};ch.append(c);
+  });
+  v.append(ch);
+  var ids=Object.keys(R).filter(function(id){
+    var r=R[id];
+    if(plFilter==='exclus')return !!S.hidden[id];
+    if(plFilter!=='tous'&&r.t!==plFilter)return false;
+    if(plSearch&&M.norm(r.n).indexOf(M.norm(plSearch))<0)return false;
+    return true;
+  }).sort(function(a,b){return (st.count[b]||0)-(st.count[a]||0)||R[a].n.localeCompare(R[b].n,'fr');});
+  if(!ids.length)v.append(el('p','empty','Aucun plat.'));
+  ids.forEach(function(id){
+    var r=R[id],o=el('div','card');o.style.cursor='pointer';
+    o.append(el('div','n',r.n));o.lastChild.style.fontWeight='700';
+    var m=el('div','m');m.style.fontSize='12.5px';m.style.color='var(--mut)';
+    m.textContent=TYPES[r.t]+' · '+seasonsTxt(r.s)+(st.count[id]?' · servi '+st.count[id]+' fois':'')+(S.hidden[id]?' · exclu':'');
+    o.append(m);o.onclick=function(){openRecipe(id);};v.append(o);
+  });
+}
+function openRecipe(id){
+  var R=recipes(),r=R[id],b=$('dlgBody');b.innerHTML='';
+  b.append(el('h2',null,r.n));
+  b.append(el('p','note',TYPES[r.t]+' · '+seasonsTxt(r.s)+' · '+(r.k?r.k+' j au frigo':'à faire le jour même')+(r.f?' · se congèle':'')));
+  b.append(el('div',null,'Pour 4 portions :'));
+  var ul=el('ul','ing');M.ingsOf(r).forEach(function(g){ul.append(el('li',null,M.fmtQty(g.q,g.u)+' '+g.n));});b.append(ul);
+  var row=el('div','row');row.style.marginTop='14px';
+  var ed=el('button','btn','Modifier');ed.onclick=function(){openEditor(id);};
+  var hd=el('button','btn',S.hidden[id]?'Proposer à nouveau':'Ne plus proposer');
+  hd.onclick=function(){if(S.hidden[id])delete S.hidden[id];else S.hidden[id]=1;save();closeDlg();render();};
+  row.append(ed,hd);b.append(row);
+  if(S.custom[id]){
+    var dl=el('button','btn',M.BASE[id]?'Revenir à la version d\u2019origine':'Supprimer ce plat');dl.style.width='100%';dl.style.marginTop='8px';
+    dl.onclick=function(){if(!confirm(M.BASE[id]?'Revenir à la recette d\u2019origine ?':'Supprimer « '+r.n+' » ?'))return;delete S.custom[id];save();closeDlg();render();};
+    b.append(dl);
+  }
+  var cl=el('button','btn p','Fermer');cl.style.width='100%';cl.style.marginTop='8px';cl.onclick=closeDlg;b.append(cl);
+  if(!$('dlg').open)$('dlg').showModal();
+}
+function openEditor(id){
+  var R=recipes(),r=id?R[id]:{n:'',t:'soir',s:'ahpe',k:3,f:false,i:[]},b=$('dlgBody');b.innerHTML='';
+  b.append(el('h2',null,id?'Modifier le plat':'Nouveau plat'));
+  function field(lbl,node){var l=el('label',null,lbl);b.append(l,node);return node;}
+  var n=field('Nom',el('input'));n.value=r.n;
+  var t=field('Type',el('select'));Object.keys(TYPES).forEach(function(k){var o=el('option',null,TYPES[k]);o.value=k;t.append(o);});t.value=r.t;
+  b.append(el('label',null,'Saisons'));
+  var sw=el('div','chips'),sc={};
+  'ahpe'.split('').forEach(function(c){var l=el('label','inline'),cb=el('input');cb.type='checkbox';cb.checked=(r.s||'ahpe').indexOf(c)>-1;sc[c]=cb;l.append(cb,document.createTextNode(M.SEASON_NAMES[c]));sw.append(l);});
+  b.append(sw);
+  var rw=el('div','row');b.append(rw);
+  var kw=el('div');kw.append(el('label',null,'Jours au frigo'));var k=el('input');k.type='number';k.min='0';k.max='6';k.value=r.k;kw.append(k);rw.append(kw);
+  var opts=el('div','chips');opts.style.marginTop='8px';
+  function flag(lbl,val){var l=el('label','inline'),cb=el('input');cb.type='checkbox';cb.checked=!!val;l.append(cb,document.createTextNode(lbl));opts.append(l);return cb;}
+  var f=flag('Se congèle',r.f),p=flag('Plat de pâtes (jeudi)',r.p),mm=flag('Contient de la viande',r.m);
+  b.append(opts);
+  var ing=field('Ingrédients pour 4 (un par ligne, ex. « 600 g haricots verts »)',el('textarea'));
+  ing.value=M.ingsOf(r).map(function(g){var q=g.u==='g'&&g.q>=1000?(g.q/1000)+' kg':g.u==='ml'?(g.q/10)+' cl':g.q+(g.u?' '+g.u:'');return q+' '+g.n;}).join('\n');
+  var row=el('div','row');row.style.marginTop='12px';
+  var ca=el('button','btn','Annuler');ca.onclick=closeDlg;
+  var ok=el('button','btn p','Enregistrer');
+  ok.onclick=function(){
+    var name=n.value.trim();if(!name){toast('Donne un nom au plat');return;}
+    var s='ahpe'.split('').filter(function(c){return sc[c].checked;}).join('')||'ahpe';
+    var nid=id||M.slug(name);if(!id&&R[nid])nid=nid+'-'+Date.now().toString(36).slice(-3);
+    var o={id:nid,n:name,t:t.value,s:s,k:Math.max(0,parseInt(k.value,10)||0),f:f.checked,i:ing.value.split('\n').map(function(x){return x.trim();}).filter(Boolean)};
+    if(p.checked)o.p=1;if(mm.checked)o.m=1;
+    S.custom[nid]=o;save();closeDlg();render();toast('Plat enregistré');
+  };
+  row.append(ca,ok);b.append(row);
+  if(!$('dlg').open)$('dlg').showModal();
+}
+
+/* ===== Réglages ===== */
+function renderReglages(v){
+  var c=el('div','card');c.append(el('h3',null,'Stock partagé'));
+  c.append(el('p','note',house?('Connecté au foyer '+house+(syncMsg?' — '+syncMsg:'')+'.'):'Pas connecté : les menus restent sur ce téléphone.'));
+  c.append(el('p','note',FZ.length?('Stock congélos lu : '+FZ.filter(function(i){return i.qty>0;}).length+' produits ('+(fzSource==='partagé'?'stock partagé':'copie locale')+').'):'Stock congélos non trouvé.'));
+  var code=el('input');code.placeholder='Code de foyer de l\u2019appli congélos';code.value=house||'';c.append(code);
+  var r=el('div','row');r.style.marginTop='8px';
+  var go=el('button','btn p','Connecter');go.onclick=function(){var v2=code.value.trim().replace(/^.*#f=/,'');if(!validCode(v2)){toast('Code invalide');return;}setHouse(v2);if(startSync(v2))toast('Connexion…');};
+  r.append(go);
+  if(house){var off=el('button','btn','Déconnecter');off.onclick=function(){stopSync();house='';setHouse('');try{localStorage.setItem(MHKEY,'-');}catch(e){}render();};r.append(off);}
+  c.append(r);v.append(c);
+
+  var p=el('div','card');p.append(el('h3',null,'Portions'));
+  function num(lbl,key){var l=el('label',null,lbl),i=el('input');i.type='number';i.min='0';i.max='12';i.value=S.settings[key];i.onchange=function(){S.settings[key]=Math.max(0,parseInt(i.value,10)||0);save();};p.append(l,i);}
+  num('Portions par midi en période scolaire','pms');num('Portions par midi pendant les vacances','pm');
+  var zl=el('label',null,'Zone de vacances scolaires'),zs=el('select');
+  [['','Je ne sais pas (seules Toussaint, Noël et été comptent)'],['A','Zone A (Bordeaux, Lyon, Dijon…)'],['B','Zone B (Lille, Nantes, Rennes, Normandie…)'],['C','Zone C (Paris, Toulouse, Montpellier…)']].forEach(function(z){var o=el('option',null,z[1]);o.value=z[0];zs.append(o);});
+  zs.value=S.settings.zone||'';zs.onchange=function(){S.settings.zone=zs.value;save();};p.append(zl,zs);num('Portions par soir','ps');num('Portions du mijoté à congeler en plus','fz');
+  v.append(p);
+
+  var a=el('div','card');a.append(el('h3',null,'Proposition par l\u2019IA (facultatif)'));
+  a.append(el('p','note','Le bouton ✨ IA envoie votre historique de menus, la saison et le stock à écouler à Claude, qui propose une semaine et peut inventer de nouveaux plats. Il faut une clé API Anthropic (console.anthropic.com, paiement à l\u2019usage : quelques centimes par proposition). La clé reste sur ce téléphone.'));
+  var k=el('input');k.type='password';k.placeholder='sk-ant-…';try{k.value=localStorage.getItem(AKEY)||'';}catch(e){}
+  k.onchange=function(){try{if(k.value.trim())localStorage.setItem(AKEY,k.value.trim());else localStorage.removeItem(AKEY);}catch(e){}toast('Clé enregistrée sur ce téléphone');};
+  a.append(k);
+  var md=el('select');[['claude-sonnet-5-5','Claude Sonnet (meilleur)'],['claude-haiku-5-5','Claude Haiku (moins cher)']].forEach(function(m){var o=el('option',null,m[1]);o.value=m[0];md.append(o);});
+  try{md.value=localStorage.getItem(MKEY)||'claude-sonnet-5-5';}catch(e){}
+  md.onchange=function(){try{localStorage.setItem(MKEY,md.value);}catch(e){}};
+  a.append(el('label',null,'Modèle'),md);v.append(a);
+
+  var h=el('div','card');h.append(el('h3',null,'Historique'));
+  var n=Object.keys(S.weeks).length;
+  h.append(el('p','note',n+' semaines de menus enregistrées. Chaque semaine proposée puis ajustée sert à apprendre vos habitudes : les plats servis souvent remontent, ceux des 2 dernières semaines sont écartés.'));
+  v.append(h);
+}
+
+/* ===== IA ===== */
+function aiPrompt(){
+  var R=recipes(), st=M.stats(S.weeks,monday), season=M.SEASON_NAMES[M.seasonOf(M.parseIso(monday))];
+  var hist=Object.keys(S.weeks).filter(function(w){return w<monday;}).sort().slice(-8).map(function(w){
+    var x=S.weeks[w];return 'Semaine du '+w+'\n  midis : '+x.midi.map(slotName).join(' | ')+'\n  soirs : '+x.soir.map(slotName).join(' | ');
+  }).join('\n');
+  var plats=Object.keys(R).filter(function(id){return !S.hidden[id];}).map(function(id){var r=R[id];return '- '+r.n+' ['+r.t+'; saisons '+r.s+'; frigo '+r.k+' j'+(r.f?'; congelable':'')+(r.p?'; pâtes':'')+(st.count[id]?'; servi '+st.count[id]+' fois':'')+']';}).join('\n');
+  var exclus=Object.keys(S.hidden).map(function(id){return R[id]?R[id].n:'';}).filter(Boolean).join(', ')||'aucun';
+  var pri=freezerPrioList().slice(0,15).map(function(i){return '- '+i.name+' ('+i.qty+' '+i.unit+', '+ageTxt(i)+(M.PLAT_CATS[i.cat]?', plat tout prêt':'')+')';}).join('\n')||'rien de particulier';
+  var plats_fz=FZ.filter(function(i){return i.qty>0&&M.PLAT_CATS[i.cat];}).map(function(i){return i.name;}).join(', ')||'aucun';
+  var w=wk(), locks=[];
+  if(w)['midi','soir'].forEach(function(m){w[m].forEach(function(s,d){if(s&&s.l)locks.push(M.DAYS[d]+' '+m+' : '+slotName(s));});});
+  return 'Tu aides une famille française (2 adultes, 2 enfants de 2 et 6 ans) à faire ses menus de la semaine du '+dateLbl(monday,{day:'numeric',month:'long',year:'numeric'})+' ('+season+').\n\n'+
+  'Leurs habitudes :\n- Tout est cuisiné le dimanche et rangé au frigo pour la semaine ; ils aiment un plat mijoté le dimanche qui sert le lundi midi et dont une partie est congelée.\n- Midis du lundi au vendredi : gamelles (viande ou poisson + féculent + légume).\n- Soirs : rapides et en général sans viande (soupes, tartes, gnocchi poêlés avec légumes vapeur, croque…). Le jeudi soir, c\u2019est pâtes.\n- Des légumes à chaque repas, c\u2019est important avec de jeunes enfants.\n- Attention à la conservation : un plat cuit le dimanche ne doit pas dépasser son nombre de jours au frigo ; sinon il doit être congelable (on le congèle dimanche et on le sort la veille).\n- Varier les féculents et les protéines d\u2019un jour à l\u2019autre, au moins un poisson par semaine si possible, éviter ce qui a été mangé les 2 dernières semaines.\n\n'+
+  'Leurs dernières semaines :\n'+hist+'\n\n'+
+  'Leurs plats connus :\n'+plats+'\n\nPlats à ne plus proposer : '+exclus+'\n\n'+
+  'Au congélo, à écouler en priorité (utilise-les comme ingrédients ou proposes-les tels quels) :\n'+pri+'\nPlats maison tout prêts au congélo : '+plats_fz+'\n\n'+
+  (locks.length?'Cases déjà fixées, à garder telles quelles :\n'+locks.join('\n')+'\n\n':'')+
+  'Propose la semaine. Tu peux reprendre leurs plats connus (écris le nom exactement comme dans la liste), un plat tout prêt du congélo (écris son nom exact précédé de « ❄ »), ou inventer 1 à 3 nouveaux plats de saison qui collent à leurs habitudes (décris-les dans "nouveaux", ingrédients pour 4 personnes, sans sel, poivre, huile ni épices).\n\n'+
+  'Réponds uniquement avec ce JSON :\n{"midi":["lundi = le mijoté du dimanche","mardi","mercredi","jeudi","vendredi"],"soir":["lundi","mardi","mercredi","jeudi (pâtes)","vendredi"],"nouveaux":[{"n":"Nom du plat","t":"mijote|midi|soir","s":"saisons parmi a h p e","k":3,"f":true,"p":false,"m":false,"i":["600 g haricots verts","2 oignons"]}],"note":"une ou deux phrases pour expliquer les choix (congélo, saison)"}';
+}
+function parseJson(t){var a=t.indexOf('{'),b=t.lastIndexOf('}');if(a<0||b<a)throw new Error('réponse illisible');return JSON.parse(t.slice(a,b+1));}
+function askAI(){
+  var key='';try{key=localStorage.getItem(AKEY)||'';}catch(e){}
+  if(!key){toast('Ajoute ta clé API dans Réglages');view='reglages';render();return;}
+  var model='claude-sonnet-5-5';try{model=localStorage.getItem(MKEY)||model;}catch(e){}
+  var bar=$('bar');bar.classList.add('busy');toast('L\u2019IA prépare la semaine…');
+  fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'content-type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    body:JSON.stringify({model:model,max_tokens:3000,messages:[{role:'user',content:aiPrompt()}]})})
+  .then(function(r){return r.json().then(function(j){if(!r.ok)throw new Error(j&&j.error&&j.error.message||('erreur '+r.status));return j;});})
+  .then(function(j){
+    var txt=(j.content||[]).filter(function(c){return c.type==='text';}).map(function(c){return c.text;}).join('');
+    applyAI(parseJson(txt));
+  })
+  .catch(function(e){toast('IA : '+e.message);})
+  .then(function(){bar.classList.remove('busy');});
+}
+function applyAI(o){
+  var R=recipes(), byName={};
+  Object.keys(R).forEach(function(id){byName[M.norm(R[id].n)]=id;});
+  (o.nouveaux||[]).forEach(function(x){
+    if(!x||!x.n)return;var nm=M.norm(x.n);if(byName[nm])return;
+    var id=M.slug(x.n);if(R[id])id+='-ia';
+    var r={id:id,n:String(x.n),t:TYPES[x.t]?x.t:'soir',s:/^[ahpe]+$/.test(x.s||'')?x.s:'ahpe',k:Math.max(0,parseInt(x.k,10)||3),f:!!x.f,i:(x.i||[]).map(String),ai:1};
+    if(x.p)r.p=1;if(x.m)r.m=1;
+    S.custom[id]=r;byName[nm]=id;
+  });
+  function resolve(name){
+    if(!name)return null;var s=String(name).trim();
+    if(/^❄/.test(s)||/congélo/i.test(s)){
+      var nm=M.norm(s.replace(/^❄\s*/,'').replace(/\(.*\)/,'')).trim();
+      var it=FZ.filter(function(i){return i.qty>0&&(M.norm(i.name)===nm||M.norm(i.name).indexOf(nm)>-1||nm.indexOf(M.norm(i.name))>-1);})[0];
+      if(it)return {fz:it.id,n:it.name};
+    }
+    var id=byName[M.norm(s)];if(id)return {id:id};
+    var k=Object.keys(byName).filter(function(n){return n.indexOf(M.norm(s))>-1||M.norm(s).indexOf(n)>-1;})[0];
+    if(k)return {id:byName[k]};
+    return {txt:s};
+  }
+  var old=wk()||{midi:[],soir:[]}, w={w:monday,gen:Date.now(),prep:{},ai:1,midi:[],soir:[]};
+  ['midi','soir'].forEach(function(m){for(var d=0;d<5;d++){var keep=old[m]&&old[m][d];w[m][d]=keep&&keep.l?keep:resolve((o[m]||[])[d]);}});
+  if(o.note)w.note=String(o.note).slice(0,500);
+  S.weeks[monday]=w;save();view='semaine';render();toast('Semaine proposée par l\u2019IA');
+}
+
+/* ===== Rendu ===== */
+function render(){
+  var season=M.SEASON_NAMES[M.seasonOf(M.parseIso(monday))];
+  $('sub').textContent='Saison : '+season+(house?' · partagé':'')+(syncMsg?' · '+syncMsg:'');
+  var tabs=$('tabs');tabs.innerHTML='';
+  [['semaine','Semaine'],['courses','Courses'],['plats','Plats'],['reglages','Réglages']].forEach(function(t){
+    var b=el('button','tab'+(view===t[0]?' on':''),t[1]);b.onclick=function(){view=t[0];window.scrollTo(0,0);render();};tabs.append(b);
+  });
+  var v=$('view'),y=window.scrollY;v.innerHTML='';
+  if(view==='semaine')renderSemaine(v);else if(view==='courses')renderCourses(v);else if(view==='plats')renderPlats(v);else renderReglages(v);
+  window.scrollTo(0,y);
+  var bar=$('bar');bar.innerHTML='';
+  if(view==='semaine'){
+    var p=el('button','btn p',wk()?'Relancer':'Proposer');p.onclick=function(){if(wk()&&!confirm('Refaire la semaine ? Les plats verrouillés 🔒 sont gardés.'))return;propose();};
+    var a=el('button','btn','✨ IA');a.onclick=function(){if(wk()&&!confirm('Demander une nouvelle semaine à l\u2019IA ? Les plats verrouillés 🔒 sont gardés.'))return;askAI();};
+    bar.append(p,a);
+  }else if(view==='courses'){
+    var s=el('button','btn p','Partager la liste');s.onclick=shareList;
+    var u=el('button','btn','Tout décocher');u.onclick=function(){listState().c={};save();render();};
+    bar.append(s,u);
+  }else if(view==='plats'){
+    var n=el('button','btn p','+ Nouveau plat');n.onclick=function(){openEditor(null);};bar.append(n);
+  }
+  bar.style.display=bar.childNodes.length?'flex':'none';
+}
+$('dlg').addEventListener('click',function(e){if(e.target===$('dlg'))closeDlg();});
+render();
+if('serviceWorker' in navigator)window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});
+})();
+</script>
+</body>
+</html>
