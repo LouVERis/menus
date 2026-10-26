@@ -1,5 +1,5 @@
 // Change ce numéro à chaque mise à jour pour forcer le rafraîchissement du cache.
-var CACHE = 'menus-app-v1';
+var CACHE = 'menus-app-v2';
 var FILES = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png', 'favicon.png', 'engine.js'];
 // Bibliothèque Firebase (Google), gardée en cache pour que l'appli démarre sans réseau.
 var CDN = [

@@ -46,6 +46,7 @@ main{padding:12px 16px}
 .tg{display:inline-block;font-size:11.5px;border-radius:6px;padding:0 6px;margin:2px 4px 0 0;background:var(--soft);color:var(--acc)}
 .tg.i{background:var(--icebg);color:var(--ice)}
 .tg.w{background:var(--warmbg);color:var(--warm)}
+.tg.add{background:var(--acc);color:var(--onacc);cursor:pointer;padding:2px 8px}
 .sb{width:36px;height:36px;flex:none;border-radius:9px;border:1px solid var(--line);background:transparent;cursor:pointer;font-size:15px;display:inline-flex;align-items:center;justify-content:center}
 .sb.on{background:var(--acc);color:var(--onacc);border-color:var(--acc)}
 .chk{display:flex;gap:10px;color:var(--ink);font-size:15px;margin:0;align-items:flex-start;padding:7px 0;border-top:1px solid var(--line);cursor:pointer}
@@ -251,6 +252,11 @@ function slotRow(w,meal,d){
   var dish=el('div','dish');dish.append(el('div','n',slotName(s)));
   var m=el('div','m');
   if(s&&s.fz)m.append(el('span','tg i','du congélo'));
+  if(s&&s.txt&&s.txt!=='—'){
+    var ad=el('span','tg add','+ ajouter au carnet');
+    ad.onclick=function(e){e.stopPropagation();addToCarnet(meal,d,s.txt);};
+    m.append(ad);
+  }
   if(r){
     if(meal==='midi'&&d===0&&r.t==='mijote')m.append(el('span','tg w','mijoté du dimanche'));
     var kn=meal==='midi'?M.keepNote(r,d):'';
@@ -287,7 +293,11 @@ function openPicker(meal,d){
     fzm.forEach(function(it){if(f&&M.norm(it.name).indexOf(f)<0)return;opt('❄ '+it.name,'au congélo · '+it.qty+' '+it.unit,function(){pick({fz:it.id,n:it.name});});shown++;});
     good.forEach(function(id){if(f&&M.norm(R[id].n).indexOf(f)<0)return;if(!f&&shown>=14)return;opt(R[id].n,'suggéré',function(){pick({id:id});});shown++;});
     if(f)others.forEach(function(id){if(M.norm(R[id].n).indexOf(f)<0)return;opt(R[id].n,'hors saison ou autre type de repas',function(){pick({id:id});});});
-    if(f)opt('« '+q.value.trim()+' »','texte libre (restes, resto, invités…)',function(){pick({txt:q.value.trim()});});
+    if(f){
+      var tx=q.value.trim();
+      opt('+ Ajouter « '+tx+' » au carnet','nouveau plat avec ses ingrédients : proposé ensuite et compté dans les courses',function(){addToCarnet(meal,d,tx);});
+      opt('« '+tx+' »','texte libre, juste pour cette fois (restes, resto, invités…)',function(){pick({txt:tx});});
+    }
     opt('Rien / pas à la maison',null,function(){pick({txt:'—'});});
   }
   q.oninput=draw;draw();
@@ -392,8 +402,16 @@ function openRecipe(id){
   var cl=el('button','btn p','Fermer');cl.style.width='100%';cl.style.marginTop='8px';cl.onclick=closeDlg;b.append(cl);
   if(!$('dlg').open)$('dlg').showModal();
 }
-function openEditor(id){
-  var R=recipes(),r=id?R[id]:{n:'',t:'soir',s:'ahpe',k:3,f:false,i:[]},b=$('dlgBody');b.innerHTML='';
+/* Crée un plat à partir d'un texte libre et le met directement dans la case */
+function addToCarnet(meal,d,txt){
+  var t=meal==='soir'?'soir':(d===0?'mijote':'midi');
+  openEditor(null,{n:txt,t:t,s:'ahpe',k:3,f:false,i:[],p:(meal==='soir'&&d===3)?1:0},function(nid){
+    var w=wk();if(!w)return;var cur=w[meal][d];
+    w[meal][d]={id:nid};if(cur&&cur.l)w[meal][d].l=true;
+  });
+}
+function openEditor(id,preset,onSaved){
+  var R=recipes(),r=id?R[id]:(preset||{n:'',t:'soir',s:'ahpe',k:3,f:false,i:[]}),b=$('dlgBody');b.innerHTML='';
   b.append(el('h2',null,id?'Modifier le plat':'Nouveau plat'));
   function field(lbl,node){var l=el('label',null,lbl);b.append(l,node);return node;}
   var n=field('Nom',el('input'));n.value=r.n;
@@ -419,7 +437,7 @@ function openEditor(id){
     var nid=id||M.slug(name);if(!id&&R[nid])nid=nid+'-'+Date.now().toString(36).slice(-3);
     var o={id:nid,n:name,t:t.value,s:s,k:Math.max(0,parseInt(k.value,10)||0),f:f.checked,i:ing.value.split('\n').map(function(x){return x.trim();}).filter(Boolean)};
     if(p.checked)o.p=1;if(mm.checked)o.m=1;
-    S.custom[nid]=o;save();closeDlg();render();toast('Plat enregistré');
+    S.custom[nid]=o;if(onSaved)onSaved(nid);save();closeDlg();render();toast(onSaved?'Plat ajouté au carnet et à la semaine':'Plat enregistré');
   };
   row.append(ca,ok);b.append(row);
   if(!$('dlg').open)$('dlg').showModal();
