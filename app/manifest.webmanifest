@@ -1,7 +1,7 @@
 {
   "id": "/menus/app/",
-  "name": "Menus de la semaine",
-  "short_name": "Menus",
+  "name": "MiamSemaine",
+  "short_name": "MiamSemaine",
   "description": "Menus de la semaine, batch du dimanche et liste de courses",
   "lang": "fr",
   "start_url": "/menus/app/",
